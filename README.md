@@ -52,10 +52,19 @@ The application consists of two main components:
    - Generation of structured medical reports with symptoms, diagnosis, and medications
    - this will add into the doctor's to-do list interface
 
+5. **Doctor's To-do Interface**
+   - AI generated report will be displayed here
+   - Doctor can approve or edit the report/medication
+   - Approvals will be stored in a separate CSV file
+
+6. **Application Status**
+   - Patient's basic information with summary of symptoms and doctor's prescribed medication.
+   - Patient's can easily access their report here.
+
 ## Setup Requirements
 
 - Python 3.7+
-- Node.js and npm
+- Flask
 - OpenAI API key
 - Pinecone API key
 
@@ -65,20 +74,6 @@ The application uses several CSV files for data management:
 - `patient_history.csv`: Stores patient interaction history
 - `doctor_to_do.csv`: Manages doctor's tasks and prescriptions
 - `approval.csv`: Tracks prescription approvals
-
-## AI Components
-
-1. **HealthcareAssistant (Agent1)**
-   - Handles initial patient interactions
-   - Processes medical queries
-
-2. **Medical_Data_Retrival (Agent2)**
-   - Retrieves relevant medical information
-   - Integrates with Pinecone vector database
-
-3. **ReportGeneratorAgent (Agent3)**
-   - Generates structured medical reports
-   - Summarizes patient interactions
 
 ## Security
 
