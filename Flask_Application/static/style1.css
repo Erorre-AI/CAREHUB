@@ -1,34 +1,96 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0fff0; /* Light green background */
-    color: #2f4f4f; /* Dark Slate Gray for text */
+    background-color: rgba(255,255,255,0.5);
+    background-image: url("{{ url_for('static', filename='home_page2.jpg') }}");
+
+    /* Light green background */
 }
 
-nav {
-    background: #98fb98; /* Pale Green */
+.navbar {
+background-color: rgba(255, 255, 255, 0.5); /* Adjust opacity (0.5) as needed */
+    backdrop-filter: blur(10px); /* Optional: Add blur for aesthetic effect */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Optional: Add subtle border */
     padding: 15px;
-    text-align: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-nav button {
+.navbar a {
+    text-decoration: none;
+    color: #0e1a22;
+    /* Dark Slate Gray */
+    font-size: 18px;
     margin: 0 10px;
-    padding: 10px 20px;
-    background: white;
-    border: 2px solid #98fb98; /* Pale Green border */
-    border-radius: 5px;
-    color: #2f4f4f; /* Dark Slate Gray */
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
+    transition: color 0.3s ease;
 }
 
-nav button:hover {
-    background: #2f4f4f; /* Dark Slate Gray */
+.nav-link:hover {
+    background-color: #0e1a22;
+    color: whitesmoke ;
+    border-radius: 10px 0px 10px 0px;
+    /* Dark blue */
+}
+
+.logo{
+    width: 50px;
+    height: auto;
+}
+
+.content {
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.footer:hover{
+    color: #32b541;
+}
+
+.form-container {
+    margin-top: 20px;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.form-container button {
+    padding: 10px 15px;
+    background-color: #32b541;
     color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    opacity: 0.8;
 }
 
 .modal {
@@ -190,7 +252,12 @@ button:hover {
 .modal-content button:hover {
     background-color: #32cd32;
 }
-.chat-message b {
-    color: #333;
-    font-weight: bold;
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: black;
+    color: #32b541;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }
