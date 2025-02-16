@@ -1,0 +1,33 @@
+Patient_ID,Doctor's_To-Do_List
+P.ID-37100,"
+        
+        PATIENT DETAILS:
+        {'Date of Birth': '1999-10-10', 'Gender': 'Female', 'name': 'Pakeeza Batool '}
+        
+        SYMPTOMS SUMMARY:
+        **Patient Summary for Doctor:**
+
+- **Blood Pressure:** Normal
+- **Diabetes Status:** Yes
+- **Symptoms:**
+  - **Sore Throat:**
+    - Description: Scratchy and painful
+    - Nature: Constant pain
+    - Severity: 7 out of 10
+  - **Fever:** Present
+- **Duration of Symptoms:** 5 days
+- **Additional Symptoms:** None
+
+Please review the information for further assessment and treatment. Thank you!
+        
+        DIAGNOSIS AND RECOMMENDATIONS:
+        Based on the symptoms presented, the patient's condition is suggestive of a viral or bacterial infection affecting the throat, most likely a case of **Streptococcal Pharyngitis (Strep throat)**. The key indicators supporting this diagnosis include:
+
+- **Sore Throat:** Described as scratchy and painful, with a severity rating of 7 out of 10.
+- **Fever:** Presence of fever often accompanies infections, particularly in cases of strep throat.
+- **Duration of Symptoms:** The symptoms have persisted for 5 days, which is consistent with a strep throat infection that can last longer if untreated.
+
+The relevant cases provided also align with this diagnosis, as they all exhibit similar symptoms and have been diagnosed with strep throat. 
+
+It would be prudent for the patient to undergo a rapid strep test or throat culture to confirm the diagnosis and determine the appropriate treatment, which may include antibiotics if a bacterial infection is confirmed. Additionally, managing blood sugar levels is essential due to the patient's diabetes status, especially when dealing with infections.
+        "
