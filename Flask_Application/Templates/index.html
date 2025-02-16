@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Medical Chatbot</title>
+    <script>
+        function submitSymptoms() {
+            let symptoms = document.getElementById("symptoms").value;
+            fetch("/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ symptoms: symptoms })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message));
+        }
+    </script>
+</head>
+<body>
+    <h2>Enter Symptoms</h2>
+    <input type="text" id="symptoms" placeholder="E.g., Fever, Headache">
+    <button onclick="submitSymptoms()">Submit</button>
+</body>
+</html>

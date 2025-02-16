@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            background-image: url('{{ url_for('static', filename='doctor_todo.png') }}');
+            min-height: 100vh;
+            overflow: hidden;
+            background-color: #f4f7f6;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            position: fixed;
+            top: 75px;
+            height: calc(100vh - 75px);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0f7fa;
+            text-align: center;
+        }
+
+        .patient-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .patient-list li {
+            padding: 15px;
+            margin-bottom: 12px;
+            background-color: #e3f2fd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #bbdefb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .patient-info {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .patient-id {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .patient-status {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .patient-list li:hover {
+            background-color: #2196f3;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .patient-list li:hover .patient-status {
+            color: #fff;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 30px;
+            display: none;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            margin: 20px;
+            margin-left: 310px;
+            height: calc(100vh - 115px);
+        }
+
+        .section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 18px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+
+        .section-content {
+            margin-left: 15px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .section-content p {
+            margin-bottom: 8px;
+        }
+
+        .text-box-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .formatted-text-box {
+            flex-grow: 1;
+            width: 100%;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #fafafa;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .formatted-text-box.editing {
+            background-color: #ffffff;
+            border: 2px solid #2196f3;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            padding: 20px 0;
+        }
+
+        .button-group button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .edit-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .accept-btn {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .button-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            color: #666;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content.show {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-new {
+            background-color: #4caf50;
+        }
+
+        .status-pending {
+            background-color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img class="logo" src="{{ url_for('static', filename='chat_carehub.png') }}" alt="Carehub Logo">
+            </a>
+        </div>
+    </nav>
+
+    <section class="list-menu">
+        <div class="sidebar">
+            <h2>Doctor's To-Do</h2>
+            <ul class="patient-list" id="patient-list"></ul>
+        </div>
+
+        <div class="content" id="content">
+            <div class="text-box-container">
+                <div id="formatted-text-box" class="formatted-text-box"></div>
+                <div class="button-group">
+                    <button class="edit-btn" id="edit-btn">
+                        <span class="material-icons">edit</span>
+                        Edit Review
+                    </button>
+                    <button class="accept-btn" id="accept-btn">
+                        <span class="material-icons">check_circle</span>
+                        Accept & Complete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        &copy; 2024 CareHUB Medical Assistant. All rights reserved.
+    </footer>
+
+   <script>
+        const patientList = document.getElementById("patient-list");
+        const content = document.getElementById("content");
+        const formattedTextBox = document.getElementById("formatted-text-box");
+        const editButton = document.getElementById("edit-btn");
+        const acceptButton = document.getElementById("accept-btn");
+
+        let currentPatientId = null;
+        let isEditing = false;
+
+        function formatText(text) {
+    text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+    // Split the text into sections based on ***section***
+    const sections = text.split(/\*\*\*(.*?)\*\*\*/);
+    let formattedHTML = '';
+    let isSection = false;
+
+    sections.forEach((part, index) => {
+        if (isSection) {
+            formattedHTML += `<div class="section"><div class="section-title">${part.trim()}</div>`;
+        } else if (part.trim()) {
+            let lines = part.split('\n');
+            let processedContent = '';
+            let inList = false;
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) {
+                    if (inList) {
+                        processedContent += '</ul>';
+                        inList = false;
+                    }
+                    processedContent += '<br>';  // Ensure newlines are added properly
+                    return;
+                }
+
+                line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                if (line.startsWith('- ')) {
+                    if (!inList) {
+                        processedContent += '<ul style="list-style-type: disc; margin-left: 20px;">';
+                        inList = true;
+                    }
+                    processedContent += `<li>${line.substring(2)}</li>`;
+                } else {
+                    if (inList) {
+                        processedContent += '</ul>';
+                        inList = false;
+                    }
+                    processedContent += `<p>${line.replace(/\\n/g, '<br>')}</p>`; // Ensure newlines inside paragraphs
+                }
+            });
+
+            if (inList) {
+                processedContent += '</ul>';
+            }
+
+            formattedHTML += `<div class="section-content">${processedContent}</div></div>`;
+        }
+        isSection = !isSection;
+    });
+
+    return formattedHTML;
+}
+
+        async function loadPatients() {
+            try {
+                const response = await fetch('/get_patients');
+                const patients = await response.json();
+                patientList.innerHTML = '';
+                patients.forEach(patient => {
+                    const listItem = document.createElement("li");
+                    listItem.innerHTML = `
+                        <div class="status-indicator status-new"></div>
+                        <div class="patient-info">
+                            <div class="patient-id">Patient ${patient.Patient_ID}</div>
+                            <div class="patient-status">New Review Required</div>
+                        </div>
+                    `;
+                    listItem.dataset.id = patient.Patient_ID;
+                    patientList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error('Error loading patients:', error);
+            }
+        }
+
+        patientList.addEventListener("click", async (e) => {
+            const listItem = e.target.closest('li');
+            if (listItem) {
+                const patientId = listItem.dataset.id;
+                currentPatientId = patientId;
+
+                try {
+                    const response = await fetch(`/get_patient_todo/${patientId}`);
+                    const patientData = await response.json();
+
+                    if (!patientData.error) {
+                        content.style.display = 'block';
+                        content.classList.add('show');
+                        formattedTextBox.innerHTML = formatText(patientData["Doctor's_To-Do_List"]);
+                        isEditing = false;
+                        formattedTextBox.classList.remove('editing');
+                    }
+                } catch (error) {
+                    console.error('Error loading patient data:', error);
+                }
+            }
+        });
+
+        editButton.addEventListener("click", () => {
+            if (!isEditing) {
+                isEditing = true;
+                formattedTextBox.contentEditable = true;
+                formattedTextBox.classList.add('editing');
+                editButton.innerHTML = '<span class="material-icons">save</span>Save Changes';
+            } else {
+                isEditing = false;
+                formattedTextBox.contentEditable = false;
+                formattedTextBox.classList.remove('editing');
+                editButton.innerHTML = '<span class="material-icons">edit</span>Edit Review';
+            }
+        });
+
+        acceptButton.addEventListener("click", async () => {
+            try {
+                const updatedTodo = formattedTextBox.innerHTML;
+
+                await fetch(`/update_todo/${currentPatientId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ todo: updatedTodo })
+                });
+
+                const patientElement = patientList.querySelector(`li[data-id="${currentPatientId}"]`);
+                if (patientElement) {
+                    patientElement.remove();
+                }
+
+                content.style.display = 'none';
+            } catch (error) {
+                console.error('Error updating todo:', error);
+            }
+        });
+
+        loadPatients();
+    </script>
+
+</body>
+</html>
