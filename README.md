@@ -16,7 +16,7 @@ CAREHUB is a comprehensive healthcare application that combines AI-powered chat 
 
 The application consists of two main components:
 
-1. **Frontend (React)**
+1. **Frontend (React js)**
    - Modern, responsive user interface
    - Real-time chat functionality
    - Patient registration form
@@ -26,7 +26,7 @@ The application consists of two main components:
 2. **Backend (Flask)**
    - Multi-Agentic Approach
    - OpenAI API endpoints
-   - RAG based medication retrieval
+   - RAG-based medication retrieval
    - Pinecone vector database
    - Data management and storage
 
