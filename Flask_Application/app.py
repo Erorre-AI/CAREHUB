@@ -11,9 +11,9 @@ app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'  # Change this to a secure secret key
 
 # Initialize API keys
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = 'key'
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
-os.environ["PINECONE_API_KEY"] = 'pcsk_3v9V4z_BipevyfmLRyy2wzrZTGbofqheFijgxYhWsxc3cLmK2AYr7gcgQ9xdMLJhzx5H28'
+os.environ["PINECONE_API_KEY"] = 'key_pinecone'
 
 # Initialize agents
 healthcare_assistant = HealthcareAssistant(api_key=OPENAI_API_KEY)
